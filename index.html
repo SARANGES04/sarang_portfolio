@@ -1,1072 +1,325 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sarang E S | Embedded Systems & Networking Engineer</title>
+    <title>Sarang E S | Engineering Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* ==========================================================================
-           1. CSS VARIABLES & RESET
-           ========================================================================== */
-        :root {
-            /* Color Palette */
-            --bg-main: #09090b;
-            --bg-surface: #18181b;
-            --bg-surface-light: #27272a;
-            --primary: #14b8a6; /* Teal */
-            --primary-glow: rgba(20, 184, 166, 0.4);
-            --secondary: #3b82f6; /* Blue */
-            --accent: #8b5cf6; /* Purple */
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --border-color: rgba(255, 255, 255, 0.08);
-            
-            /* Typography */
-            --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-            --font-mono: 'Fira Code', ui-monospace, monospace;
-            
-            /* Transitions */
-            --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            --transition-bounce: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            cursor: none; /* Custom cursor used instead */
-        }
-
-        html {
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
             scroll-behavior: smooth;
         }
 
-        body {
-            font-family: var(--font-sans);
-            background-color: var(--bg-main);
-            color: var(--text-main);
-            line-height: 1.6;
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
+        .glass-card {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        /* Typography */
-        h1, h2, h3, h4, h5, h6 {
-            font-weight: 700;
-            line-height: 1.2;
-            color: var(--text-main);
+        .glass-card:hover {
+            transform: translateY(-8px);
+            background: rgba(255, 255, 255, 0.05);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            border-color: rgba(96, 165, 250, 0.4);
         }
 
-        a {
-            color: inherit;
-            text-decoration: none;
-        }
-
-        ul {
-            list-style: none;
-        }
-
-        /* Selection */
-        ::selection {
-            background-color: var(--primary);
-            color: #fff;
-        }
-
-        /* Scrollbar */
-        ::-webkit-scrollbar {
-            width: 10px;
-        }
-        ::-webkit-scrollbar-track {
-            background: var(--bg-main);
-        }
-        ::-webkit-scrollbar-thumb {
-            background: var(--bg-surface-light);
-            border-radius: 5px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--primary);
-        }
-
-        /* ==========================================================================
-           2. CUSTOM CURSOR
-           ========================================================================== */
-        .cursor-dot {
-            width: 8px;
-            height: 8px;
-            background-color: var(--primary);
-            border-radius: 50%;
-            position: fixed;
-            top: 0;
-            left: 0;
-            transform: translate(-50%, -50%);
-            pointer-events: none;
-            z-index: 9999;
-            transition: width 0.2s, height 0.2s, background-color 0.2s;
-        }
-
-        .cursor-outline {
-            width: 40px;
-            height: 40px;
-            border: 1px solid var(--primary);
-            border-radius: 50%;
-            position: fixed;
-            top: 0;
-            left: 0;
-            transform: translate(-50%, -50%);
-            pointer-events: none;
-            z-index: 9998;
-            transition: width 0.2s, height 0.2s, background-color 0.2s;
-            transition-timing-function: ease-out;
-            transition-duration: 0.15s;
-        }
-
-        /* Hover state for cursor */
-        .cursor-hover .cursor-dot {
-            width: 0;
-            height: 0;
-        }
-        .cursor-hover .cursor-outline {
-            width: 60px;
-            height: 60px;
-            background-color: var(--primary-glow);
-            border-color: transparent;
-        }
-
-        /* ==========================================================================
-           3. BACKGROUND EFFECTS
-           ========================================================================== */
-        #particle-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: -2;
-            opacity: 0.6;
-        }
-
-        .glow-blob {
-            position: fixed;
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, var(--primary-glow) 0%, transparent 70%);
-            border-radius: 50%;
-            top: -200px;
-            left: -200px;
-            z-index: -1;
-            filter: blur(80px);
-            opacity: 0.5;
-            animation: float-blob 10s infinite alternate ease-in-out;
-        }
-        
-        .glow-blob.secondary {
-            background: radial-gradient(circle, rgba(59, 130, 246, 0.2) 0%, transparent 70%);
-            top: auto;
-            bottom: -200px;
-            left: auto;
-            right: -200px;
-            animation-delay: -5s;
-        }
-
-        /* ==========================================================================
-           4. LAYOUT & COMPONENTS
-           ========================================================================== */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-
-        section {
-            padding: 8rem 0;
-            position: relative;
-        }
-
-        .section-header {
-            margin-bottom: 4rem;
-            position: relative;
-        }
-
-        .section-title {
-            font-size: 2.5rem;
-            font-weight: 800;
-            display: inline-block;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, var(--text-main) 0%, var(--text-muted) 100%);
+        .gradient-text {
+            background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        .section-line {
-            width: 60px;
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            border-radius: 2px;
+        .section-dot {
+            height: 10px;
+            width: 10px;
+            background: #60a5fa;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 15px;
+            box-shadow: 0 0 15px #60a5fa;
         }
 
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0.8rem 1.8rem;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 1rem;
-            transition: var(--transition-smooth);
+        .certificate-img {
+            transition: transform 0.5s ease;
+            cursor: pointer;
+        }
+        
+        .certificate-img:hover {
+            transform: scale(1.05);
+        }
+
+        .profile-ring {
             position: relative;
-            overflow: hidden;
-            gap: 0.5rem;
+            padding: 5px;
+            background: linear-gradient(135deg, #60a5fa, #a78bfa);
+            border-radius: 50%;
+            box-shadow: 0 0 30px rgba(96, 165, 250, 0.3);
         }
 
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: #fff;
-            box-shadow: 0 4px 15px rgba(20, 184, 166, 0.3);
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 10px;
         }
 
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(20, 184, 166, 0.5);
-        }
-
-        /* ==========================================================================
-           5. NAVBAR
-           ========================================================================== */
-        header {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 100;
-            background: rgba(9, 9, 11, 0.7);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--border-color);
-            transition: var(--transition-smooth);
-        }
-
-        .nav-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            height: 80px;
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 800;
-            letter-spacing: 1px;
-            color: var(--text-main);
-            position: relative;
-        }
-
-        .logo span {
-            color: var(--primary);
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2.5rem;
-        }
-
-        .nav-links a {
-            font-size: 0.9rem;
-            font-weight: 500;
-            color: var(--text-muted);
-            transition: var(--transition-smooth);
-            position: relative;
-        }
-
-        .nav-links a::after {
-            content: '';
+        .timeline-line {
             position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: -4px;
-            left: 0;
-            background: var(--primary);
-            transition: var(--transition-smooth);
-        }
-
-        .nav-links a:hover {
-            color: var(--text-main);
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-        /* Mobile Menu Toggle */
-        .menu-toggle {
-            display: none;
-            flex-direction: column;
-            gap: 5px;
-            z-index: 101;
-        }
-
-        .menu-toggle span {
-            width: 30px;
-            height: 2px;
-            background-color: var(--text-main);
-            transition: var(--transition-smooth);
-        }
-
-        /* ==========================================================================
-           6. HERO SECTION
-           ========================================================================== */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            padding-top: 80px;
-            padding-bottom: 40px;
-        }
-
-        .hero-inner {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 3rem;
-            width: 100%;
-        }
-
-        .hero-text {
-            flex: 1;
-            max-width: 650px;
-        }
-
-        .hero-greeting {
-            color: var(--primary);
-            font-family: var(--font-mono);
-            font-size: 1.1rem;
-            margin-bottom: 1rem;
-            display: block;
-        }
-
-        .hero-title {
-            font-size: 4.5rem;
-            font-weight: 800;
-            margin-bottom: 1rem;
-            line-height: 1.1;
-        }
-
-        .hero-subtitle {
-            font-size: 2.8rem;
-            color: var(--text-muted);
-            margin-bottom: 1.5rem;
-            line-height: 1.2;
-        }
-
-        .hero-desc {
-            font-size: 1.1rem;
-            color: var(--text-muted);
-            max-width: 600px;
-            margin-bottom: 2.5rem;
-        }
-
-        .typing-text::after {
-            content: '|';
-            animation: blink 1s step-end infinite;
-            color: var(--primary);
-        }
-
-        .hero-cta {
-            display: flex;
-            gap: 1.5rem;
-            align-items: center;
-        }
-
-        .social-links {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .social-link {
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid var(--border-color);
-            color: var(--text-muted);
-            transition: var(--transition-bounce);
-            background: var(--bg-surface);
-        }
-
-        .social-link:hover {
-            color: #fff;
-            border-color: var(--primary);
-            background: var(--primary);
-            transform: translateY(-5px);
-        }
-
-        /* Hero Image Styles */
-        .hero-image-wrapper {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .hero-image-container {
-            position: relative;
-            width: 380px;
-            height: 380px;
-            border-radius: 50%;
-            padding: 8px; /* Thickness of the gradient border */
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            box-shadow: 0 0 40px rgba(20, 184, 166, 0.25);
-            animation: float 6s ease-in-out infinite;
-        }
-
-        /* Ambient glow behind the image */
-        .hero-image-container::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            filter: blur(25px);
-            z-index: -1;
-            opacity: 0.6;
-            animation: pulse-glow 4s ease-in-out infinite alternate;
-        }
-
-        .hero-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 50%;
-            border: 6px solid var(--bg-main); /* Inner dark border */
-            background-color: var(--bg-surface); /* Fallback background */
-            z-index: 1;
-            position: relative;
-        }
-
-        /* ==========================================================================
-           7. ABOUT & EDUCATION SECTION
-           ========================================================================== */
-        .about-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-        }
-
-        .about-text p {
-            color: var(--text-muted);
-            font-size: 1.05rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .info-list {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-            margin-top: 2rem;
-        }
-
-        .info-item {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .info-label {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            margin-bottom: 0.2rem;
-        }
-
-        .info-value {
-            font-weight: 600;
-            color: var(--text-main);
-        }
-
-        /* Education Timeline */
-        .timeline {
-            position: relative;
-            padding-left: 2rem;
-        }
-
-        .timeline::before {
-            content: '';
-            position: absolute;
-            left: 0;
+            left: 7px;
             top: 0;
             bottom: 0;
             width: 2px;
-            background: var(--border-color);
+            background: linear-gradient(to bottom, #3b82f6 0%, transparent 100%);
         }
 
-        .timeline-item {
-            position: relative;
-            margin-bottom: 3rem;
-        }
-
-        .timeline-item::before {
-            content: '';
-            position: absolute;
-            left: -2.35rem;
-            top: 0.3rem;
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            background: var(--bg-main);
-            border: 2px solid var(--primary);
-            transition: var(--transition-smooth);
-        }
-
-        .timeline-item:hover::before {
-            background: var(--primary);
-            box-shadow: 0 0 10px var(--primary-glow);
-        }
-
-        .timeline-date {
-            font-family: var(--font-mono);
-            font-size: 0.85rem;
-            color: var(--primary);
-            margin-bottom: 0.5rem;
-            display: inline-block;
-            background: rgba(20, 184, 166, 0.1);
-            padding: 0.2rem 0.8rem;
-            border-radius: 20px;
-        }
-
-        .timeline-title {
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin-bottom: 0.3rem;
-        }
-
-        .timeline-subtitle {
-            font-size: 1rem;
-            color: var(--text-muted);
-            font-weight: 500;
-        }
-
-        /* ==========================================================================
-           8. SKILLS SECTION
-           ========================================================================== */
-        .skills-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-        }
-
-        .skill-category {
-            background: var(--bg-surface);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 2rem;
-            transition: var(--transition-smooth);
-        }
-
-        .skill-category:hover {
-            transform: translateY(-5px);
-            border-color: rgba(20, 184, 166, 0.3);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-
-        .skill-icon {
-            width: 50px;
-            height: 50px;
-            background: rgba(20, 184, 166, 0.1);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--primary);
-            margin-bottom: 1.5rem;
-        }
-
-        .skill-category h3 {
-            font-size: 1.2rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .skill-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.8rem;
-        }
-
-        .skill-tag {
-            background: var(--bg-surface-light);
+        .skill-badge {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.05);
             padding: 0.5rem 1rem;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            transition: var(--transition-smooth);
-            border: 1px solid transparent;
+            border-radius: 0.75rem;
+            font-size: 0.875rem;
+            color: #94a3b8;
+            transition: all 0.3s ease;
         }
 
-        .skill-tag:hover {
-            background: rgba(20, 184, 166, 0.1);
-            color: var(--primary);
-            border-color: rgba(20, 184, 166, 0.2);
-        }
-
-        /* ==========================================================================
-           9. PROJECTS & EXPERIENCE
-           ========================================================================== */
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2.5rem;
-        }
-
-        .project-card {
-            background: var(--bg-surface);
-            border: 1px solid var(--border-color);
-            border-radius: 20px;
-            padding: 2.5rem;
-            transition: var(--transition-smooth);
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-        }
-
-        .project-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform 0.4s ease;
-        }
-
-        .project-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-        }
-
-        .project-card:hover::before {
-            transform: scaleX(1);
-        }
-
-        .project-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 1.5rem;
-        }
-
-        .project-icon {
-            color: var(--primary);
-        }
-
-        .project-title {
-            font-size: 1.4rem;
-            margin-bottom: 1rem;
-            color: var(--text-main);
-        }
-
-        .project-desc {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            margin-bottom: 2rem;
-            flex-grow: 1;
-        }
-
-        .project-desc ul {
-            list-style-type: none;
-            padding-left: 0;
-        }
-
-        .project-desc li {
-            position: relative;
-            padding-left: 1.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .project-desc li::before {
-            content: "▹";
-            position: absolute;
-            left: 0;
-            color: var(--primary);
-            font-weight: bold;
-        }
-
-        .project-tech {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            font-family: var(--font-mono);
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            margin-top: auto;
-        }
-
-        /* Internship specific styling inside projects container */
-        .experience-card {
-            background: linear-gradient(to right, var(--bg-surface), rgba(39, 39, 42, 0.4));
-            border-left: 4px solid var(--secondary);
-            border-radius: 0 20px 20px 0;
-        }
-
-        /* ==========================================================================
-           10. CERTIFICATIONS & ACHIEVEMENTS
-           ========================================================================== */
-        .achievements-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-        }
-
-        .achievement-card {
-            display: flex;
-            align-items: flex-start;
-            gap: 1.5rem;
-            background: var(--bg-surface);
-            padding: 1.5rem;
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            transition: var(--transition-smooth);
-        }
-
-        .achievement-card:hover {
-            background: var(--bg-surface-light);
-            border-color: rgba(59, 130, 246, 0.3);
-        }
-
-        .achievement-icon {
-            background: rgba(59, 130, 246, 0.1);
-            color: var(--secondary);
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-
-        .achievement-content h4 {
-            font-size: 1.1rem;
-            margin-bottom: 0.3rem;
-        }
-
-        .achievement-content p {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            margin-bottom: 0.5rem;
-        }
-        
-        .achievement-date {
-            font-size: 0.8rem;
-            font-family: var(--font-mono);
-            color: var(--secondary);
-        }
-
-        /* ==========================================================================
-           11. CONTACT SECTION
-           ========================================================================== */
-        .contact-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .contact-text {
-            color: var(--text-muted);
-            margin-bottom: 2.5rem;
-            font-size: 1.1rem;
-        }
-
-        .contact-cards {
-            display: flex;
-            gap: 2rem;
-            justify-content: center;
-            width: 100%;
-            flex-wrap: wrap;
-        }
-
-        .contact-card {
-            background: var(--bg-surface);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 2rem;
-            flex: 1;
-            min-width: 250px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            transition: var(--transition-smooth);
-        }
-
-        .contact-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--primary);
-            background: rgba(20, 184, 166, 0.05);
-        }
-
-        .contact-card svg {
-            color: var(--primary);
-            margin-bottom: 1rem;
-        }
-
-        .contact-card h4 {
-            margin-bottom: 0.5rem;
-            font-size: 1.2rem;
-        }
-
-        .contact-card p {
-            color: var(--text-muted);
-        }
-
-        /* ==========================================================================
-           12. FOOTER
-           ========================================================================== */
-        footer {
-            text-align: center;
-            padding: 2rem 0;
-            border-top: 1px solid var(--border-color);
-            color: var(--text-muted);
-            font-family: var(--font-mono);
-            font-size: 0.9rem;
-            background: var(--bg-main);
-        }
-
-        footer span {
-            color: var(--primary);
-        }
-
-        /* ==========================================================================
-           13. ANIMATIONS & REVEALS
-           ========================================================================== */
-        .reveal {
-            opacity: 0;
-            transform: translateY(40px);
-            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
-        }
-
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .delay-1 { transition-delay: 0.1s; }
-        .delay-2 { transition-delay: 0.2s; }
-        .delay-3 { transition-delay: 0.3s; }
-
-        @keyframes float-blob {
-            0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(30px, -50px) scale(1.1); }
-        }
-
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
-            100% { transform: translateY(0px); }
-        }
-
-        @keyframes pulse-glow {
-            0% { opacity: 0.4; filter: blur(20px); }
-            100% { opacity: 0.7; filter: blur(35px); }
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
-        }
-
-        /* ==========================================================================
-           14. MEDIA QUERIES (RESPONSIVE)
-           ========================================================================== */
-        @media (max-width: 992px) {
-            .hero-inner {
-                flex-direction: column-reverse; /* Stacks image on top, text below */
-                text-align: center;
-                gap: 4rem;
-                padding-top: 2rem;
-            }
-            .hero-text {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-            }
-            .hero-title { font-size: 3.5rem; }
-            .hero-subtitle { font-size: 2.2rem; }
-            .hero-image-container {
-                width: 300px;
-                height: 300px;
-            }
-            .about-grid { grid-template-columns: 1fr; gap: 3rem; }
-            .achievements-grid { grid-template-columns: 1fr; }
-        }
-
-        @media (max-width: 768px) {
-            section { padding: 6rem 0; }
-            .nav-links {
-                position: absolute;
-                top: 80px;
-                left: -100%;
-                width: 100%;
-                background: var(--bg-surface);
-                flex-direction: column;
-                align-items: center;
-                padding: 2rem 0;
-                transition: var(--transition-smooth);
-                border-bottom: 1px solid var(--border-color);
-            }
-            .nav-links.active { left: 0; }
-            .menu-toggle { display: flex; }
-            .menu-toggle.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-            .menu-toggle.active span:nth-child(2) { opacity: 0; }
-            .menu-toggle.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-            
-            .hero-title { font-size: 2.8rem; }
-            .hero-subtitle { font-size: 1.8rem; }
-            .hero-image-container { width: 260px; height: 260px; }
-            .projects-grid { grid-template-columns: 1fr; }
-        }
-
-        @media (max-width: 480px) {
-            .hero-title { font-size: 2.2rem; }
-            .hero-subtitle { font-size: 1.4rem; }
-            .hero-image-container { width: 220px; height: 220px; }
-            .contact-cards { flex-direction: column; }
+        .skill-badge:hover {
+            border-color: #60a5fa;
+            color: #fff;
+            background: rgba(96, 165, 250, 0.1);
         }
     </style>
 </head>
-<body>
-
-    <!-- Custom Cursor -->
-    <div class="cursor-dot"></div>
-    <div class="cursor-outline"></div>
-
-    <!-- Background Effects -->
-    <canvas id="particle-canvas"></canvas>
-    <div class="glow-blob"></div>
-    <div class="glow-blob secondary"></div>
+<body class="bg-[#0b1120] text-slate-200 custom-scrollbar">
 
     <!-- Navigation -->
-    <header>
-        <div class="container nav-container">
-            <a href="#" class="logo">SARANG<span>.</span></a>
-            
-            <nav class="nav-links">
-                <a href="#about" class="hover-target">About</a>
-                <a href="#skills" class="hover-target">Skills</a>
-                <a href="#experience" class="hover-target">Experience</a>
-                <a href="#projects" class="hover-target">Projects</a>
-                <a href="#contact" class="hover-target">Contact</a>
-            </nav>
-
-            <div class="menu-toggle hover-target">
-                <span></span>
-                <span></span>
-                <span></span>
+    <nav class="fixed w-full z-50 bg-[#0b1120]/80 backdrop-blur-xl border-b border-slate-800/50">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <span class="text-2xl font-black tracking-tighter gradient-text">SARANG E S</span>
+            <div class="space-x-10 hidden lg:flex text-sm font-semibold tracking-wide uppercase">
+                <a href="#about" class="hover:text-blue-400 transition-colors">About</a>
+                <a href="#projects" class="hover:text-blue-400 transition-colors">Projects</a>
+                <a href="#experience" class="hover:text-blue-400 transition-colors">Internship</a>
+                <a href="#skills" class="hover:text-blue-400 transition-colors">Skills</a>
+                <a href="#education" class="hover:text-blue-400 transition-colors">Education</a>
+                <a href="#cv" class="hover:text-blue-400 transition-colors">CV</a>
             </div>
+            <div class="flex items-center gap-6">
+                <a href="https://linkedin.com/in/saranges" target="_blank" class="text-slate-400 hover:text-blue-400 transition-colors"><i class="fab fa-linkedin text-2xl"></i></a>
+                <a href="https://github.com/SARANGES04" target="_blank" class="text-slate-400 hover:text-blue-400 transition-colors"><i class="fab fa-github text-2xl"></i></a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header id="about" class="pt-48 pb-24 px-6 relative overflow-hidden">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[800px] bg-blue-500/10 blur-[120px] rounded-full -z-10"></div>
+        <div class="max-w-6xl mx-auto flex flex-col-reverse md:flex-row items-center justify-between gap-12">
+            
+            <div class="text-center md:text-left flex-1">
+                <h1 class="text-6xl md:text-8xl font-black mb-6 tracking-tight">Sarang <span class="gradient-text">E S</span></h1>
+                <p class="text-blue-400 font-mono text-lg mb-8 tracking-[0.2em] uppercase font-bold">Embedded System Engineer</p>
+                <p class="text-xl text-slate-400 max-w-3xl mx-auto md:mx-0 leading-relaxed mb-12">
+                   Electronics and Communication Student Passionate about developing <span class="text-white">Embedded Systems</span> and <span class="text-white">Software Solutions</span>. that combine hardware, programming, and real-world problem solving.
+                </p>
+            </div>
+
+            <div class="flex justify-center md:justify-end mb-10 md:mb-0">
+                <div class="profile-ring">
+                    <img src="assets/profile pic.png" alt="Sarang E S" class="w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 rounded-full object-cover border-8 border-[#0b1120]">
+                </div>
+            </div>
+            
         </div>
     </header>
 
-    <!-- Hero Section -->
-    <section class="hero" id="home">
-        <div class="container hero-inner">
-            
-            <!-- Left Side: Text -->
-            <div class="hero-text reveal">
-                <span class="hero-greeting">Hello World, I'm</span>
-                <h1 class="hero-title">Sarang E S.</h1>
-                <h2 class="hero-subtitle typing-text">I build embedded systems.</h2>
-                <p class="hero-desc">
-                    Electronics and Communication Engineer specializing in IoT, Embedded Systems, and NextGen Networking. Passionate about designing circuit systems and developing autonomous solutions that bridge hardware and software.
-                </p>
-                <div class="hero-cta">
-                    <a href="#projects" class="btn btn-primary hover-target">
-                        View Projects
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+    <!-- CV Section -->
+    <section id="cv" class="py-12 px-6">
+        <div class="max-w-6xl mx-auto">
+            <div class="glass-card rounded-[2rem] p-10 flex flex-col md:flex-row items-center justify-between gap-10 border-blue-500/20 shadow-2xl shadow-blue-500/5">
+                <div class="text-center md:text-left">
+                    <h2 class="text-3xl font-bold mb-3">Technical Portfolio & CV</h2>
+                    <p class="text-slate-400 text-lg">Download my full professional background as a comprehensive PDF.</p>
+                </div>
+                <div class="flex flex-col sm:flex-row gap-5 w-full md:w-auto">
+                    <a href="assets/Sarang_cv.pdf" download class="px-8 py-4 bg-blue-600 hover:bg-blue-500 text-white rounded-2xl font-bold transition-all transform hover:scale-105 flex items-center justify-center gap-3">
+                        <i class="fas fa-file-download"></i> Download Resume
                     </a>
-                    <div class="social-links">
-                        <a href="https://github.com/SARANGES04" target="_blank" class="social-link hover-target" aria-label="GitHub">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
-                        </a>
-                        <a href="https://linkedin.com/in/saranges" target="_blank" class="social-link hover-target" aria-label="LinkedIn">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
-                        </a>
-                        <a href="mailto:saranges2004@gmail.com" class="social-link hover-target" aria-label="Email">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-                        </a>
-                    </div>
                 </div>
             </div>
-
-            <!-- Right Side: Profile Picture -->
-            <div class="hero-image-wrapper reveal delay-2">
-                <div class="hero-image-container hover-target">
-                    <!-- ADD YOUR PROFILE PICTURE URL HERE -->
-                    <!-- Change src="your-profile-pic.jpg" to your actual photo link or local path -->
-                    <img src="https://ui-avatars.com/api/?name=Sarang+E+S&size=512&background=18181b&color=14b8a6&font-size=0.33&bold=true" alt="Sarang E S Profile Picture" class="hero-image">
-                </div>
-            </div>
-
         </div>
     </section>
 
-    <!-- About & Education Section -->
-    <section id="about">
-        <div class="container">
-            <div class="section-header reveal">
-                <h2 class="section-title">01. About Me</h2>
-                <div class="section-line"></div>
+    <!-- Projects Section -->
+    <section id="projects" class="py-32 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="mb-16">
+                <h2 class="text-4xl font-bold flex items-center tracking-tight">
+                    <span class="section-dot"></span>Major Projects & Innovations
+                </h2>
+                <p class="text-slate-500 mt-4 text-lg max-w-2xl">A portfolio of multi-disciplinary engineering projects covering robotics, energy harvesting, and web technology.</p>
             </div>
 
-            <div class="about-grid">
-                <div class="about-text reveal delay-1">
-                    <p>
-                        I am an Electronics and Communications Engineering student at Lovely Professional University, with a strong foundation in hardware-software integration. I enjoy building things that operate autonomously and efficiently in the physical world.
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Air Quality Robot -->
+                <div class="glass-card rounded-3xl p-8 flex flex-col group border-white/5">
+                    <div class="flex justify-between mb-6">
+                        <div class="w-14 h-14 bg-blue-500/10 rounded-2xl flex items-center justify-center text-blue-400 group-hover:bg-blue-500 group-hover:text-white transition-colors">
+                            <i class="fas fa-robot text-2xl"></i>
+                        </div>
+                        <span class="text-xs font-mono text-slate-500 self-center">AUG - NOV '24</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">Autonomous AQI Robot</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-8 flex-grow">
+                        Autonomous mobile purification system using MQ135/PM sensors and ESP32. Dynamically moves to zones with highest pollution for targeted filtering.
                     </p>
-                    <p>
-                        My journey spans from programming microcontrollers using the Arduino framework to designing circuits and simulating complex networks. Whether it's developing an autonomous robot or a smart IoT device, I bring problem-solving skills and technical rigor to every project.
-                    </p>
-                    
-                    <div class="info-list">
-                        <div class="info-item">
-                            <span class="info-label">Name</span>
-                            <span class="info-value">Sarang E S</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">Email</span>
-                            <span class="info-value">saranges2004@gmail.com</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">Phone</span>
-                            <span class="info-value">+91-7025941294</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">Location</span>
-                            <span class="info-value">Punjab / Kerala, India</span>
-                        </div>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="text-[10px] px-3 py-1 rounded-lg bg-blue-500/10 text-blue-400 font-bold">ESP32</span>
+                        <span class="text-[10px] px-3 py-1 rounded-lg bg-blue-500/10 text-blue-400 font-bold">Robotics</span>
                     </div>
                 </div>
 
-                <div class="education reveal delay-2">
-                    <h3 style="margin-bottom: 2rem; font-size: 1.5rem;">Education Path</h3>
-                    <div class="timeline">
-                        <div class="timeline-item hover-target">
-                            <span class="timeline-date">Aug 2023 - Expected</span>
-                            <h4 class="timeline-title">B.Tech Electronics & Communications</h4>
-                            <div class="timeline-subtitle">Lovely Professional University, Punjab</div>
-                            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;">Current CGPA: 7.28</p>
+                <!-- Turnstile Generator -->
+                <div class="glass-card rounded-3xl p-8 flex flex-col group border-white/5">
+                    <div class="flex justify-between mb-6">
+                        <div class="w-14 h-14 bg-amber-500/10 rounded-2xl flex items-center justify-center text-amber-400 group-hover:bg-amber-500 group-hover:text-white transition-colors">
+                            <i class="fas fa-bolt text-2xl"></i>
                         </div>
-                        <div class="timeline-item hover-target">
-                            <span class="timeline-date">Apr 2022 - Mar 2023</span>
-                            <h4 class="timeline-title">Intermediate</h4>
-                            <div class="timeline-subtitle">Hill Blooms School, Wayanad, Kerala</div>
+                        <span class="text-xs font-mono text-slate-500 self-center">Sustainable</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">Turnstile Electricity Gen</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-8 flex-grow">
+                        Harvests mechanical energy from rotational turnstiles in metro stations. Uses electromagnetic induction and voltage regulation to power local electronics.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="text-[10px] px-3 py-1 rounded-lg bg-amber-500/10 text-amber-400 font-bold">Power Electronics</span>
+                        <span class="text-[10px] px-3 py-1 rounded-lg bg-amber-500/10 text-amber-400 font-bold">Generators</span>
+                    </div>
+                </div>
+
+                <!-- Smart Yoga Mat -->
+                <div class="glass-card rounded-3xl p-8 flex flex-col group border-white/5">
+                    <div class="flex justify-between mb-6">
+                        <div class="w-14 h-14 bg-purple-500/10 rounded-2xl flex items-center justify-center text-purple-400 group-hover:bg-purple-500 group-hover:text-white transition-colors">
+                            <i class="fas fa-spa text-2xl"></i>
                         </div>
-                        <div class="timeline-item hover-target">
-                            <span class="timeline-date">Apr 2020 - Mar 2021</span>
-                            <h4 class="timeline-title">Matriculation</h4>
-                            <div class="timeline-subtitle">Hill Blooms School, Wayanad, Kerala</div>
+                        <span class="text-xs font-mono text-slate-500 self-center">MAR - APR '24</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">Interactive Smart Yoga Mat</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-8 flex-grow">
+                        Health-tech solution using FSR sensors for real-time posture validation. Features visual and audio feedback via LED/Buzzer indicators.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="text-[10px] px-3 py-1 rounded-lg bg-purple-500/10 text-purple-400 font-bold">FSR Sensors</span>
+                        <span class="text-[10px] px-3 py-1 rounded-lg bg-purple-500/10 text-purple-400 font-bold">Health-Tech</span>
+                    </div>
+                </div>
+
+                <!-- Energy Monitoring -->
+                <div class="glass-card rounded-3xl p-8 flex flex-col group border-white/5">
+                    <div class="flex justify-between mb-6">
+                        <div class="w-14 h-14 bg-red-500/10 rounded-2xl flex items-center justify-center text-red-400 group-hover:bg-red-500 group-hover:text-white transition-colors">
+                            <i class="fas fa-gauge-high text-2xl"></i>
                         </div>
+                        <span class="text-xs font-mono text-slate-500 self-center">Industrial</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">8051 Energy Monitoring</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-8 flex-grow">
+                        Measures V, I, and Power consumed by electrical loads using 8051 MCU and ADC0804. Designed with Embedded C in Keil and Proteus simulation.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="text-[10px] px-3 py-1 rounded-lg bg-red-500/10 text-red-400 font-bold">Embedded C</span>
+                        <span class="text-[10px] px-3 py-1 rounded-lg bg-red-500/10 text-red-400 font-bold">Proteus</span>
+                    </div>
+                </div>
+
+                <!-- Smart Sole -->
+                <div class="glass-card rounded-3xl p-8 flex flex-col group border-white/5">
+                    <div class="flex justify-between mb-6">
+                        <div class="w-14 h-14 bg-emerald-500/10 rounded-2xl flex items-center justify-center text-emerald-400 group-hover:bg-emerald-500 group-hover:text-white transition-colors">
+                            <i class="fas fa-shoe-prints text-2xl"></i>
+                        </div>
+                        <span class="text-xs font-mono text-slate-500 self-center">NOV '24</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">Smart Sole Gait Analysis</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-8 flex-grow">
+                        Real-time foot pressure monitoring system utilizing FSRs and ESP32 to study balance, posture, and step quality for rehabilitation.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="text-[10px] px-3 py-1 rounded-lg bg-emerald-500/10 text-emerald-400 font-bold">IoT</span>
+                        <span class="text-[10px] px-3 py-1 rounded-lg bg-emerald-500/10 text-emerald-400 font-bold">Arduino IDE</span>
+                    </div>
+                </div>
+                 
+                <!-- Kisan Mithra -->
+                <div class="glass-card rounded-3xl p-8 flex flex-col group border-white/5">
+                    <div class="flex justify-between mb-6">
+                        <div class="w-14 h-14 bg-emerald-500/10 rounded-2xl flex items-center justify-center text-emerald-400 group-hover:bg-emerald-500 group-hover:text-white transition-colors">
+                            <i class="fas fa-wheat-awn text-2xl"></i>
+                        </div>
+                        <span class="text-xs font-mono text-slate-500 self-center">Web Application</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">Kisan Mithra - Farmer Assistance</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-8 flex-grow">
+                        A full-stack web app providing real-time market prices, weather forecasts, and a multilingual query chatbot with voice recognition for rural users.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="text-[10px] px-3 py-1 rounded-lg bg-emerald-500/10 text-emerald-400 font-bold">JavaScript</span>
+                        <span class="text-[10px] px-3 py-1 rounded-lg bg-emerald-500/10 text-emerald-400 font-bold">Web APIs</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Internship/Training Section -->
+    <section id="experience" class="py-32 bg-slate-900/10 px-6">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-3xl font-bold mb-12 flex items-center tracking-tight">
+                <span class="section-dot"></span>Internships & Professional Training
+            </h2>
+            <div class="glass-card rounded-3xl p-8 md:p-12 border-blue-500/10 relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-blue-500/5 blur-3xl -z-10"></div>
+                
+                <div class="flex flex-col md:flex-row md:items-start justify-between gap-6">
+                    <div>
+                        <span class="px-4 py-1 rounded-full bg-blue-500/10 text-blue-400 text-xs font-bold uppercase tracking-wider mb-4 inline-block">Networking & Security</span>
+                        <h3 class="text-2xl font-bold mb-2">NextGen Networking Intern</h3>
+                        <p class="text-slate-400 font-semibold mb-4 italic">Centre of Professional Enhancement, Lovely Professional University</p>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-blue-400 font-mono text-sm font-bold">JUN - JUL 2024</span>
+                    </div>
+                </div>
+
+                <div class="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-12">
+                    <div class="space-y-4">
+                        <h4 class="text-white font-bold flex items-center gap-2"><i class="fas fa-bullseye text-blue-400"></i> Core Focus</h4>
+                        <p class="text-slate-400 text-sm leading-relaxed">
+                            Intensive training in Advance Computer Networks, focusing on foundational and enterprise-level architecture.
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 rounded bg-slate-800/50 text-xs text-slate-300">OSI Model</span>
+                            <span class="px-3 py-1 rounded bg-slate-800/50 text-xs text-slate-300">TCP/IP</span>
+                            <span class="px-3 py-1 rounded bg-slate-800/50 text-xs text-slate-300">Subnetting</span>
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <h4 class="text-white font-bold flex items-center gap-2"><i class="fas fa-check-circle text-blue-400"></i> Key Achievements</h4>
+                        <ul class="text-slate-400 text-sm space-y-2 list-disc ml-4">
+                            <li>Configured complex routing, switching, and VLAN architectures.</li>
+                            <li>Implemented network security protocols for enterprise simulations.</li>
+                            <li>Simulated real-world scaling scenarios using <span class="text-white font-medium">Cisco Packet Tracer</span>.</li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -1074,488 +327,195 @@
     </section>
 
     <!-- Skills Section -->
-    <section id="skills" style="background: rgba(24, 24, 27, 0.3);">
-        <div class="container">
-            <div class="section-header reveal">
-                <h2 class="section-title">02. Technical Skills</h2>
-                <div class="section-line"></div>
-            </div>
-
-            <div class="skills-grid">
-                <!-- Category 1 -->
-                <div class="skill-category reveal delay-1">
-                    <div class="skill-icon">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
-                    </div>
-                    <h3>Languages</h3>
-                    <div class="skill-tags">
-                        <span class="skill-tag hover-target">C</span>
-                        <span class="skill-tag hover-target">C++</span>
-                        <span class="skill-tag hover-target">Python</span>
-                        <span class="skill-tag hover-target">Embedded C</span>
+    <section id="skills" class="py-32 px-6">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-3xl font-bold mb-16 flex items-center tracking-tight">
+                <span class="section-dot"></span>Technical & Soft Skills
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+                <!-- Programming Languages -->
+                <div class="space-y-6">
+                    <h4 class="text-blue-400 font-bold flex items-center gap-2 uppercase tracking-widest text-sm"><i class="fas fa-code"></i> Languages</h4>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="skill-badge">C</span>
+                        <span class="skill-badge">C++</span>
+                        <span class="skill-badge">Python</span>
+                        <span class="skill-badge">JavaScript</span>
+                        <span class="skill-badge">Embedded C</span>
                     </div>
                 </div>
 
-                <!-- Category 2 -->
-                <div class="skill-category reveal delay-2">
-                    <div class="skill-icon">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
-                    </div>
-                    <h3>Frameworks & Core</h3>
-                    <div class="skill-tags">
-                        <span class="skill-tag hover-target">Arduino Framework</span>
-                        <span class="skill-tag hover-target">MATLAB / Simulink</span>
-                        <span class="skill-tag hover-target">IoT Systems</span>
-                    </div>
-                </div>
-
-                <!-- Category 3 -->
-                <div class="skill-category reveal delay-3">
-                    <div class="skill-icon">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>
-                    </div>
-                    <h3>Tools & Platforms</h3>
-                    <div class="skill-tags">
-                        <span class="skill-tag hover-target">PTC Creo</span>
-                        <span class="skill-tag hover-target">Proteus</span>
-                        <span class="skill-tag hover-target">Keil µVision</span>
-                        <span class="skill-tag hover-target">Cisco Packet Tracer</span>
+                <!-- Engineering Tools -->
+                <div class="space-y-6">
+                    <h4 class="text-emerald-400 font-bold flex items-center gap-2 uppercase tracking-widest text-sm"><i class="fas fa-screwdriver-wrench"></i> Engineering Tools</h4>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="skill-badge">PTC Creo</span>
+                        <span class="skill-badge">MATLAB</span>
+                        <span class="skill-badge">Proteus</span>
+                        <span class="skill-badge">Keil µVision</span>
+                        <span class="skill-badge">Cisco Packet Tracer</span>
+                        <span class="skill-badge">Arduino IDE</span>
                     </div>
                 </div>
 
-                <!-- Category 4 -->
-                <div class="skill-category reveal delay-1">
-                    <div class="skill-icon">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                <!-- Core Competencies -->
+                <div class="space-y-6">
+                    <h4 class="text-amber-400 font-bold flex items-center gap-2 uppercase tracking-widest text-sm"><i class="fas fa-microchip"></i> Core Expertise</h4>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="skill-badge">Circuit Design</span>
+                        <span class="skill-badge">IoT</span>
+                        <span class="skill-badge">Networking</span>
+                        <span class="skill-badge">Embedded Systems</span>
+                        <span class="skill-badge">Web Development</span>
                     </div>
-                    <h3>Core Competencies</h3>
-                    <div class="skill-tags">
-                        <span class="skill-tag hover-target">Circuit Design</span>
-                        <span class="skill-tag hover-target">Network Simulation</span>
-                        <span class="skill-tag hover-target">Problem-Solving</span>
+                </div>
+
+                <!-- Soft Skills -->
+                <div class="space-y-6">
+                    <h4 class="text-purple-400 font-bold flex items-center gap-2 uppercase tracking-widest text-sm"><i class="fas fa-handshake"></i> Soft Skills</h4>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="skill-badge">Problem-Solving</span>
+                        <span class="skill-badge">Project Management</span>
+                        <span class="skill-badge">Technical Writing</span>
+                        <span class="skill-badge">Team Collaboration</span>
+                        <span class="skill-badge">MS Office</span>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Experience & Projects Section -->
-    <section id="experience">
-        <div class="container">
-            <div class="section-header reveal">
-                <h2 class="section-title">03. Experience & Projects</h2>
-                <div class="section-line"></div>
-            </div>
-
-            <!-- Internship -->
-            <div class="project-card experience-card reveal mb-5" style="margin-bottom: 4rem;">
-                <div class="project-header">
-                    <div class="project-icon">
-                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
-                    </div>
-                    <span class="timeline-date">Jun - Jul 2024</span>
-                </div>
-                <h3 class="project-title">NextGen Networking Intern</h3>
-                <h4 style="color: var(--secondary); margin-bottom: 1rem;">Advance Computer Networks</h4>
-                <div class="project-desc">
-                    <p>Completed an intensive internship focused on core and advanced networking concepts.</p>
-                    <ul style="margin-top: 1rem;">
-                        <li>Mastered OSI and TCP/IP models, subnetting, routing, and switching.</li>
-                        <li>Configured VLANs and implemented network security protocols.</li>
-                        <li>Gained practical skills in device configuration and simulated real-world enterprise network scenarios using Cisco Packet Tracer.</li>
-                    </ul>
-                </div>
-                <div class="project-tech">
-                    <span>Networking</span>
-                    <span>Cisco Packet Tracer</span>
-                    <span>TCP/IP</span>
-                    <span>Routing & Switching</span>
-                </div>
-            </div>
-
-            <!-- Projects Grid -->
-            <div class="projects-grid">
+    <!-- Education Section -->
+    <section id="education" class="py-32 bg-slate-900/10 px-6">
+        <div class="max-w-5xl mx-auto">
+            <h2 class="text-3xl font-bold mb-16 flex items-center tracking-tight">
+                <span class="section-dot"></span>Education 
+            </h2>
+            
+            <div class="relative space-y-12">
+                <div class="timeline-line"></div>
                 
-                <!-- Project 1 -->
-                <div class="project-card reveal delay-1 hover-target">
-                    <div class="project-header">
-                        <div class="project-icon">
-                            <svg width="35" height="35" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10 1 1 0 0 0-1-1h-4a1 1 0 0 1-1-1V6a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v2a1 1 0 0 1-1 1H5a1 1 0 0 0-1 1v4a1 1 0 0 1-1 1H2"></path></svg>
+                <!-- University -->
+                <div class="relative pl-12 group">
+                    <div class="absolute left-0 top-1 w-4 h-4 rounded-full bg-blue-500 ring-4 ring-blue-500/20 z-10"></div>
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-2">
+                        <div>
+                            <h3 class="text-xl font-bold">Bachelor of Technology (ECE)</h3>
+                            <p class="text-blue-400 font-medium">Lovely Professional University, Punjab</p>
                         </div>
-                        <span class="timeline-date" style="font-size: 0.75rem;">Aug - Nov 2024</span>
-                    </div>
-                    <h3 class="project-title">Autonomous Air Quality Monitoring & Purification Robot</h3>
-                    <div class="project-desc">
-                        <ul>
-                            <li>Built an autonomous mobile robot using ESP32, MQ135/PM sensors, motors, and HEPA filter module.</li>
-                            <li>Developed a sensor-driven AQI monitoring system to detect pollution levels across multiple rooms.</li>
-                            <li>Implemented autonomous navigation logic targeting rooms with poorest air quality.</li>
-                            <li>Integrated automated fan control and obstacle detection using motor drivers and ultrasonic sensors.</li>
-                        </ul>
-                    </div>
-                    <div class="project-tech">
-                        <span>ESP32</span>
-                        <span>IoT</span>
-                        <span>Arduino IDE</span>
-                        <span>Sensors</span>
+                        <div class="text-left md:text-right">
+                            <span class="text-sm font-mono text-slate-500 block">2023 - Present</span>
+                            
+                        </div>
                     </div>
                 </div>
 
-                <!-- Project 2 -->
-                <div class="project-card reveal delay-2 hover-target">
-                    <div class="project-header">
-                        <div class="project-icon">
-                            <svg width="35" height="35" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
+                <!-- Intermediate -->
+                <div class="relative pl-12 group">
+                    <div class="absolute left-0 top-1 w-4 h-4 rounded-full bg-slate-700 z-10"></div>
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-2">
+                        <div>
+                            <h3 class="text-lg font-bold">Intermediate Education (PCM)</h3>
+                            <p class="text-slate-400">Hill Blooms School, Wayanad</p>
                         </div>
-                        <span class="timeline-date" style="font-size: 0.75rem;">Mar - Apr 2024</span>
-                    </div>
-                    <h3 class="project-title">Smart Yoga Mat</h3>
-                    <div class="project-desc">
-                        <ul>
-                            <li>Designed an interactive mat using FSR sensors, LEDs, buzzer, and an LCD to detect 4 yoga postures.</li>
-                            <li>Developed an ESP32-based real-time posture validation system with asana-specific pressure thresholds.</li>
-                            <li>Programmed visual/audio feedback logic to guide users toward correct alignment.</li>
-                            <li>Integrated UI with push buttons for selection and 20x4 LCD for clear status display.</li>
-                        </ul>
-                    </div>
-                    <div class="project-tech">
-                        <span>Embedded System</span>
-                        <span>FSR Sensors</span>
-                        <span>Arduino IDE</span>
-                        <span>Health-Tech</span>
+                        <div class="text-left md:text-right text-sm font-mono text-slate-500">
+                            2020 - 2022
+                        </div>
                     </div>
                 </div>
 
+                <!-- Matriculation -->
+                <div class="relative pl-12 group">
+                    <div class="absolute left-0 top-1 w-4 h-4 rounded-full bg-slate-700 z-10"></div>
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-2">
+                        <div>
+                            <h3 class="text-lg font-bold">Matriculation (10th)</h3>
+                            <p class="text-slate-400">Hill Blooms School, Wayanad</p>
+                        </div>
+                        <div class="text-left md:text-right text-sm font-mono text-slate-500">
+                            Graduated 2020
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Achievements & Certs Section -->
-    <section id="achievements" style="background: rgba(24, 24, 27, 0.3);">
-        <div class="container">
-            <div class="section-header reveal">
-                <h2 class="section-title">04. Achievements & Certifications</h2>
-                <div class="section-line"></div>
-            </div>
-
-            <div class="achievements-grid">
+    <!-- Visual Certificates Section -->
+    <section class="py-32 px-6 bg-slate-900/10">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-4xl font-bold mb-16 text-center">Certificates </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 
-                <!-- Hackathons -->
-                <div class="achievement-column">
-                    <h3 style="margin-bottom: 1.5rem; color: var(--text-main); font-size: 1.3rem;">Hackathons & Competitions</h3>
-                    
-                    <div class="achievement-card reveal delay-1 mb-4" style="margin-bottom: 1.5rem;">
-                        <div class="achievement-icon">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
-                        </div>
-                        <div class="achievement-content">
-                            <h4>Smart India Hackathon</h4>
-                            <p>Project: AI-Based Farmer Query Support and Advisory System</p>
-                            <span class="achievement-date">Oct 2025</span>
-                        </div>
+                <div class="glass-card rounded-3xl overflow-hidden group">
+                    <div class="h-48 overflow-hidden">
+                        <img src="assets/npetl.png" alt="DBMS NPTEL" class="w-full h-full object-cover certificate-img">
                     </div>
-
-                    <div class="achievement-card reveal delay-2">
-                        <div class="achievement-icon">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
-                        </div>
-                        <div class="achievement-content">
-                            <h4>LPU Hackathon</h4>
-                            <p>Project: Smart Yoga Mat with real-time feedback</p>
-                            <span class="achievement-date">Nov 2024</span>
-                        </div>
+                    <div class="p-6">
+                        <p class="font-bold text-sm">Database Management System</p>
+                        <p class="text-xs text-slate-500 mt-1 uppercase">NPTEL Certified</p>
                     </div>
                 </div>
 
-                <!-- Certifications -->
-                <div class="achievement-column">
-                    <h3 style="margin-bottom: 1.5rem; color: var(--text-main); font-size: 1.3rem;">Certifications</h3>
-                    
-                    <div class="achievement-card reveal delay-1" style="margin-bottom: 1.5rem;">
-                        <div class="achievement-icon" style="background: rgba(20, 184, 166, 0.1); color: var(--primary);">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-                        </div>
-                        <div class="achievement-content">
-                            <h4>Data Base Management System</h4>
-                            <p>NPTEL</p>
-                            <span class="achievement-date" style="color: var(--primary);">Jul-Sep 2025</span>
-                        </div>
+                <div class="glass-card rounded-3xl overflow-hidden group">
+                    <div class="h-48 overflow-hidden">
+                        <img src="assets/Networking.png.png" alt="Networking Merit" class="w-full h-full object-cover certificate-img">
                     </div>
-
-                    <div class="achievement-card reveal delay-2" style="margin-bottom: 1.5rem;">
-                        <div class="achievement-icon" style="background: rgba(20, 184, 166, 0.1); color: var(--primary);">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-                        </div>
-                        <div class="achievement-content">
-                            <h4>NextGen Networking</h4>
-                            <p>Centre of Professional Enhancement, LPU</p>
-                            <span class="achievement-date" style="color: var(--primary);">Jun-Jul 2025</span>
-                        </div>
+                    <div class="p-6">
+                        <p class="font-bold text-sm">NextGen Networking Merit</p>
+                        <p class="text-xs text-slate-500 mt-1 uppercase">LPU Professional Enhancement</p>
                     </div>
-                    
-                    <div class="achievement-card reveal delay-3" style="margin-bottom: 1.5rem;">
-                        <div class="achievement-icon" style="background: rgba(20, 184, 166, 0.1); color: var(--primary);">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-                        </div>
-                        <div class="achievement-content">
-                            <h4>Embedded C & STM32 Microcontroller</h4>
-                            <p>Udemy Foundation Course</p>
-                            <span class="achievement-date" style="color: var(--primary);">Oct 2023</span>
-                        </div>
-                    </div>
-
                 </div>
+
+                <div class="glass-card rounded-3xl overflow-hidden group">
+                    <div class="h-48 overflow-hidden">
+                        <img src="assets/udemy (1).png" alt="Embedded C Udemy" class="w-full h-full object-cover certificate-img">
+                    </div>
+                    <div class="p-6">
+                        <p class="font-bold text-sm">Embedded C Programming</p>
+                        <p class="text-xs text-slate-500 mt-1 uppercase">Udemy | STM32</p>
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-3xl overflow-hidden group">
+                    <div class="h-48 overflow-hidden">
+                        <img src="assets/Scalar.png.png" alt="Python Scaler" class="w-full h-full object-cover certificate-img">
+                    </div>
+                    <div class="p-6">
+                        <p class="font-bold text-sm">Python for Beginners</p>
+                        <p class="text-xs text-slate-500 mt-1 uppercase">Scaler Topics</p>
+                    </div>
+                </div>
+
             </div>
         </div>
     </section>
 
-    <!-- Contact Section -->
-    <section id="contact">
-        <div class="container">
-            <div class="section-header reveal text-center" style="display:flex; flex-direction:column; align-items:center;">
-                <h2 class="section-title">05. Get In Touch</h2>
-                <div class="section-line"></div>
-            </div>
-
-            <div class="contact-content reveal delay-1">
-                <p class="contact-text">
-                    Whether you have a question about my embedded projects, want to discuss networking architectures, or just want to say hi, I'll try my best to get back to you!
-                </p>
-
-                <div class="contact-cards">
-                    <a href="mailto:saranges2004@gmail.com" class="contact-card hover-target">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-                        <h4>Email</h4>
-                        <p>saranges2004@gmail.com</p>
-                    </a>
-                    
-                    <a href="tel:+917025941294" class="contact-card hover-target">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
-                        <h4>Phone</h4>
-                        <p>+91-7025941294</p>
-                    </a>
-
-                    <a href="https://linkedin.com/in/saranges" target="_blank" class="contact-card hover-target">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
-                        <h4>LinkedIn</h4>
-                        <p>linkedin.com/in/saranges</p>
-                    </a>
+    <!-- Footer / Contact -->
+    <footer class="py-32 border-t border-slate-800/50 bg-[#070b14] relative">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <h2 class="text-4xl md:text-5xl font-bold mb-8 gradient-text">Let's Connect</h2>
+            <p class="text-slate-400 text-lg mb-12">I'm always open to discussing innovative projects or professional opportunities.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+                <a href="mailto:saranges2004@gmail.com" class="glass-card p-6 rounded-2xl flex items-center justify-center gap-4 hover:border-blue-500/50 transition-all">
+                    <i class="fas fa-envelope text-blue-400 text-xl"></i>
+                    <span class="text-sm font-semibold">saranges2004@gmail.com</span>
+                </a>
+                <a href="tel:+917025941294" class="glass-card p-6 rounded-2xl flex items-center justify-center gap-4 hover:border-blue-500/50 transition-all">
+                    <i class="fas fa-phone text-blue-400 text-xl"></i>
+                    <span class="text-sm font-semibold">+91 7025941294</span>
+                </a>
+                <div class="flex justify-center gap-6 self-center">
+                    <a href="https://linkedin.com/in/saranges" target="_blank" class="w-12 h-12 rounded-full glass-card flex items-center justify-center hover:text-blue-400 transition-all"><i class="fab fa-linkedin-in text-lg"></i></a>
+                    <a href="https://github.com/SARANGES04" target="_blank" class="w-12 h-12 rounded-full glass-card flex items-center justify-center hover:text-blue-400 transition-all"><i class="fab fa-github text-lg"></i></a>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <p>Designed & Built by <span>Sarang E S</span> &copy; 2024</p>
+            
+            <p class="text-slate-600 text-xs tracking-widest uppercase font-bold">© 2026 Sarang E S • Wayanad, Kerala • Lovely Professional University</p>
         </div>
     </footer>
 
-    <!-- Scripts -->
-    <script>
-        // --- Custom Cursor Logic ---
-        const cursorDot = document.querySelector('.cursor-dot');
-        const cursorOutline = document.querySelector('.cursor-outline');
-        const hoverTargets = document.querySelectorAll('.hover-target, a, button');
-
-        window.addEventListener('mousemove', (e) => {
-            const posX = e.clientX;
-            const posY = e.clientY;
-
-            cursorDot.style.left = `${posX}px`;
-            cursorDot.style.top = `${posY}px`;
-            
-            // Adding slight delay for outline
-            cursorOutline.animate({
-                left: `${posX}px`,
-                top: `${posY}px`
-            }, { duration: 150, fill: "forwards" });
-        });
-
-        hoverTargets.forEach(target => {
-            target.addEventListener('mouseenter', () => {
-                document.body.classList.add('cursor-hover');
-            });
-            target.addEventListener('mouseleave', () => {
-                document.body.classList.remove('cursor-hover');
-            });
-        });
-
-        // Hide cursor when leaving window
-        document.addEventListener('mouseleave', () => {
-            cursorDot.style.opacity = 0;
-            cursorOutline.style.opacity = 0;
-        });
-        document.addEventListener('mouseenter', () => {
-            cursorDot.style.opacity = 1;
-            cursorOutline.style.opacity = 1;
-        });
-
-        // --- Mobile Menu Toggle ---
-        const menuToggle = document.querySelector('.menu-toggle');
-        const navLinks = document.querySelector('.nav-links');
-
-        menuToggle.addEventListener('click', () => {
-            menuToggle.classList.toggle('active');
-            navLinks.classList.toggle('active');
-        });
-
-        document.querySelectorAll('.nav-links a').forEach(link => {
-            link.addEventListener('click', () => {
-                menuToggle.classList.remove('active');
-                navLinks.classList.remove('active');
-            });
-        });
-
-        // --- Typing Text Effect ---
-        const textArray = ["I build embedded systems.", "I simulate networks.", "I design smart circuits.", "I code for IoT."];
-        const typingDelay = 100;
-        const erasingDelay = 50;
-        const newTextDelay = 2000;
-        let textArrayIndex = 0;
-        let charIndex = 0;
-        const typingTextElement = document.querySelector(".typing-text");
-
-        function type() {
-            if (charIndex < textArray[textArrayIndex].length) {
-                typingTextElement.textContent += textArray[textArrayIndex].charAt(charIndex);
-                charIndex++;
-                setTimeout(type, typingDelay);
-            } else {
-                setTimeout(erase, newTextDelay);
-            }
-        }
-
-        function erase() {
-            if (charIndex > 0) {
-                typingTextElement.textContent = textArray[textArrayIndex].substring(0, charIndex - 1);
-                charIndex--;
-                setTimeout(erase, erasingDelay);
-            } else {
-                textArrayIndex++;
-                if (textArrayIndex >= textArray.length) textArrayIndex = 0;
-                setTimeout(type, typingDelay + 1100);
-            }
-        }
-
-        document.addEventListener("DOMContentLoaded", function() {
-            typingTextElement.textContent = ""; // Clear initial HTML text
-            if(textArray.length) setTimeout(type, newTextDelay + 250);
-        });
-
-        // --- Scroll Reveal Animation using Intersection Observer ---
-        const revealElements = document.querySelectorAll('.reveal');
-        
-        const revealOptions = {
-            threshold: 0.15,
-            rootMargin: "0px 0px -50px 0px"
-        };
-
-        const revealOnScroll = new IntersectionObserver(function(entries, observer) {
-            entries.forEach(entry => {
-                if (!entry.isIntersecting) {
-                    return;
-                } else {
-                    entry.target.classList.add('active');
-                    observer.unobserve(entry.target); // Stop observing once revealed
-                }
-            });
-        }, revealOptions);
-
-        revealElements.forEach(el => {
-            revealOnScroll.observe(el);
-        });
-
-        // --- Navbar Background on Scroll ---
-        const header = document.querySelector('header');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                header.style.background = 'rgba(9, 9, 11, 0.9)';
-                header.style.boxShadow = '0 4px 30px rgba(0, 0, 0, 0.5)';
-            } else {
-                header.style.background = 'rgba(9, 9, 11, 0.7)';
-                header.style.boxShadow = 'none';
-            }
-        });
-
-        // --- HTML5 Canvas Network Background ---
-        const canvas = document.getElementById('particle-canvas');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
-        let numParticles = 80;
-
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            // Adjust particles count based on screen width
-            numParticles = window.innerWidth < 768 ? 40 : 80;
-            initParticles();
-        }
-
-        class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.vx = (Math.random() - 0.5) * 0.5;
-                this.vy = (Math.random() - 0.5) * 0.5;
-                this.radius = Math.random() * 2 + 1;
-            }
-
-            update() {
-                this.x += this.vx;
-                this.y += this.vy;
-
-                // Bounce off edges
-                if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
-                if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
-            }
-
-            draw() {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                ctx.fillStyle = 'rgba(20, 184, 166, 0.5)'; // Teal primary color
-                ctx.fill();
-            }
-        }
-
-        function initParticles() {
-            particles = [];
-            for (let i = 0; i < numParticles; i++) {
-                particles.push(new Particle());
-            }
-        }
-
-        function animateParticles() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            for (let i = 0; i < particles.length; i++) {
-                particles[i].update();
-                particles[i].draw();
-                
-                // Draw lines between close particles
-                for (let j = i + 1; j < particles.length; j++) {
-                    const dx = particles[i].x - particles[j].x;
-                    const dy = particles[i].y - particles[j].y;
-                    const dist = Math.sqrt(dx * dx + dy * dy);
-                    
-                    if (dist < 150) {
-                        ctx.beginPath();
-                        ctx.moveTo(particles[i].x, particles[i].y);
-                        ctx.lineTo(particles[j].x, particles[j].y);
-                        ctx.strokeStyle = `rgba(20, 184, 166, ${0.15 - dist/1000})`;
-                        ctx.lineWidth = 0.5;
-                        ctx.stroke();
-                    }
-                }
-            }
-            requestAnimationFrame(animateParticles);
-        }
-
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas(); // Initialize on load
-        animateParticles();
-
-    </script>
 </body>
 </html>
