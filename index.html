@@ -128,13 +128,14 @@
                 <h1 class="text-6xl md:text-8xl font-black mb-6 tracking-tight">Sarang <span class="gradient-text">E S</span></h1>
                 <p class="text-blue-400 font-mono text-lg mb-8 tracking-[0.2em] uppercase font-bold">Embedded System Engineer</p>
                 <p class="text-xl text-slate-400 max-w-3xl mx-auto md:mx-0 leading-relaxed mb-12">
-                   Electronics and Communication Student Passionate about developing <span class="text-white">Embedded Systems</span> and <span class="text-white">Software Solutions</span>. that combine hardware, programming, and real-world problem solving.
+                    Electronics and Communication Student Passionate about developing <span class="text-white">Embedded Systems</span> and <span class="text-white">Software Solutions</span> that combine hardware, programming, and real-world problem solving.
                 </p>
             </div>
 
             <div class="flex justify-center md:justify-end mb-10 md:mb-0">
                 <div class="profile-ring">
-                    <img src="assets/profile pic.png" alt="Sarang E S" class="w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 rounded-full object-cover border-8 border-[#0b1120]">
+                    <!-- Added object-top class to prioritize the top of the image so hair doesn't get cropped -->
+                    <img src="assets/profile pic.png" alt="Sarang E S" class="w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 rounded-full object-cover object-top border-8 border-[#0b1120]">
                 </div>
             </div>
             
@@ -165,12 +166,12 @@
                 <h2 class="text-4xl font-bold flex items-center tracking-tight">
                     <span class="section-dot"></span>Major Projects & Innovations
                 </h2>
-                <p class="text-slate-500 mt-4 text-lg max-w-2xl">A portfolio of multi-disciplinary engineering projects covering robotics, energy harvesting, and web technology.</p>
+                <p class="text-slate-500 mt-4 text-lg max-w-2xl">A portfolio of multi-disciplinary engineering projects covering robotics, energy harvesting, and web technology. Click on any project to view details.</p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <!-- Air Quality Robot -->
-                <div class="glass-card rounded-3xl p-8 flex flex-col group border-white/5">
+                <div class="glass-card rounded-3xl p-8 flex flex-col group border-white/5 cursor-pointer relative" onclick="openProject('aqi')">
                     <div class="flex justify-between mb-6">
                         <div class="w-14 h-14 bg-blue-500/10 rounded-2xl flex items-center justify-center text-blue-400 group-hover:bg-blue-500 group-hover:text-white transition-colors">
                             <i class="fas fa-robot text-2xl"></i>
@@ -179,16 +180,19 @@
                     </div>
                     <h3 class="text-xl font-bold mb-4">Autonomous AQI Robot</h3>
                     <p class="text-slate-400 text-sm leading-relaxed mb-8 flex-grow">
-                        Autonomous mobile purification system using MQ135/PM sensors and ESP32. Dynamically moves to zones with highest pollution for targeted filtering.
+                        Autonomous mobile purification system using MQ135/PM sensors and ESP32. Dynamically moves to zones with highest pollution...
                     </p>
-                    <div class="flex flex-wrap gap-2 mt-auto">
+                    <div class="flex flex-wrap gap-2 mt-auto mb-4">
                         <span class="text-[10px] px-3 py-1 rounded-lg bg-blue-500/10 text-blue-400 font-bold">ESP32</span>
                         <span class="text-[10px] px-3 py-1 rounded-lg bg-blue-500/10 text-blue-400 font-bold">Robotics</span>
                     </div>
+                    <span class="text-blue-400 text-sm font-semibold opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-2">
+                        View Details <i class="fas fa-arrow-right"></i>
+                    </span>
                 </div>
 
                 <!-- Turnstile Generator -->
-                <div class="glass-card rounded-3xl p-8 flex flex-col group border-white/5">
+                <div class="glass-card rounded-3xl p-8 flex flex-col group border-white/5 cursor-pointer relative" onclick="openProject('turnstile')">
                     <div class="flex justify-between mb-6">
                         <div class="w-14 h-14 bg-amber-500/10 rounded-2xl flex items-center justify-center text-amber-400 group-hover:bg-amber-500 group-hover:text-white transition-colors">
                             <i class="fas fa-bolt text-2xl"></i>
@@ -197,16 +201,19 @@
                     </div>
                     <h3 class="text-xl font-bold mb-4">Turnstile Electricity Gen</h3>
                     <p class="text-slate-400 text-sm leading-relaxed mb-8 flex-grow">
-                        Harvests mechanical energy from rotational turnstiles in metro stations. Uses electromagnetic induction and voltage regulation to power local electronics.
+                        Harvests mechanical energy from rotational turnstiles in metro stations. Uses electromagnetic induction and voltage regulation...
                     </p>
-                    <div class="flex flex-wrap gap-2 mt-auto">
+                    <div class="flex flex-wrap gap-2 mt-auto mb-4">
                         <span class="text-[10px] px-3 py-1 rounded-lg bg-amber-500/10 text-amber-400 font-bold">Power Electronics</span>
                         <span class="text-[10px] px-3 py-1 rounded-lg bg-amber-500/10 text-amber-400 font-bold">Generators</span>
                     </div>
+                    <span class="text-amber-400 text-sm font-semibold opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-2">
+                        View Details <i class="fas fa-arrow-right"></i>
+                    </span>
                 </div>
 
                 <!-- Smart Yoga Mat -->
-                <div class="glass-card rounded-3xl p-8 flex flex-col group border-white/5">
+                <div class="glass-card rounded-3xl p-8 flex flex-col group border-white/5 cursor-pointer relative" onclick="openProject('yoga')">
                     <div class="flex justify-between mb-6">
                         <div class="w-14 h-14 bg-purple-500/10 rounded-2xl flex items-center justify-center text-purple-400 group-hover:bg-purple-500 group-hover:text-white transition-colors">
                             <i class="fas fa-spa text-2xl"></i>
@@ -217,14 +224,17 @@
                     <p class="text-slate-400 text-sm leading-relaxed mb-8 flex-grow">
                         Health-tech solution using FSR sensors for real-time posture validation. Features visual and audio feedback via LED/Buzzer indicators.
                     </p>
-                    <div class="flex flex-wrap gap-2 mt-auto">
+                    <div class="flex flex-wrap gap-2 mt-auto mb-4">
                         <span class="text-[10px] px-3 py-1 rounded-lg bg-purple-500/10 text-purple-400 font-bold">FSR Sensors</span>
                         <span class="text-[10px] px-3 py-1 rounded-lg bg-purple-500/10 text-purple-400 font-bold">Health-Tech</span>
                     </div>
+                    <span class="text-purple-400 text-sm font-semibold opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-2">
+                        View Details <i class="fas fa-arrow-right"></i>
+                    </span>
                 </div>
 
                 <!-- Energy Monitoring -->
-                <div class="glass-card rounded-3xl p-8 flex flex-col group border-white/5">
+                <div class="glass-card rounded-3xl p-8 flex flex-col group border-white/5 cursor-pointer relative" onclick="openProject('energy')">
                     <div class="flex justify-between mb-6">
                         <div class="w-14 h-14 bg-red-500/10 rounded-2xl flex items-center justify-center text-red-400 group-hover:bg-red-500 group-hover:text-white transition-colors">
                             <i class="fas fa-gauge-high text-2xl"></i>
@@ -233,16 +243,19 @@
                     </div>
                     <h3 class="text-xl font-bold mb-4">8051 Energy Monitoring</h3>
                     <p class="text-slate-400 text-sm leading-relaxed mb-8 flex-grow">
-                        Measures V, I, and Power consumed by electrical loads using 8051 MCU and ADC0804. Designed with Embedded C in Keil and Proteus simulation.
+                        Measures V, I, and Power consumed by electrical loads using 8051 MCU and ADC0804. Designed with Embedded C in Keil...
                     </p>
-                    <div class="flex flex-wrap gap-2 mt-auto">
+                    <div class="flex flex-wrap gap-2 mt-auto mb-4">
                         <span class="text-[10px] px-3 py-1 rounded-lg bg-red-500/10 text-red-400 font-bold">Embedded C</span>
                         <span class="text-[10px] px-3 py-1 rounded-lg bg-red-500/10 text-red-400 font-bold">Proteus</span>
                     </div>
+                    <span class="text-red-400 text-sm font-semibold opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-2">
+                        View Details <i class="fas fa-arrow-right"></i>
+                    </span>
                 </div>
 
                 <!-- Smart Sole -->
-                <div class="glass-card rounded-3xl p-8 flex flex-col group border-white/5">
+                <div class="glass-card rounded-3xl p-8 flex flex-col group border-white/5 cursor-pointer relative" onclick="openProject('sole')">
                     <div class="flex justify-between mb-6">
                         <div class="w-14 h-14 bg-emerald-500/10 rounded-2xl flex items-center justify-center text-emerald-400 group-hover:bg-emerald-500 group-hover:text-white transition-colors">
                             <i class="fas fa-shoe-prints text-2xl"></i>
@@ -253,14 +266,17 @@
                     <p class="text-slate-400 text-sm leading-relaxed mb-8 flex-grow">
                         Real-time foot pressure monitoring system utilizing FSRs and ESP32 to study balance, posture, and step quality for rehabilitation.
                     </p>
-                    <div class="flex flex-wrap gap-2 mt-auto">
+                    <div class="flex flex-wrap gap-2 mt-auto mb-4">
                         <span class="text-[10px] px-3 py-1 rounded-lg bg-emerald-500/10 text-emerald-400 font-bold">IoT</span>
                         <span class="text-[10px] px-3 py-1 rounded-lg bg-emerald-500/10 text-emerald-400 font-bold">Arduino IDE</span>
                     </div>
+                    <span class="text-emerald-400 text-sm font-semibold opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-2">
+                        View Details <i class="fas fa-arrow-right"></i>
+                    </span>
                 </div>
                  
                 <!-- Kisan Mithra -->
-                <div class="glass-card rounded-3xl p-8 flex flex-col group border-white/5">
+                <div class="glass-card rounded-3xl p-8 flex flex-col group border-white/5 cursor-pointer relative" onclick="openProject('kisan')">
                     <div class="flex justify-between mb-6">
                         <div class="w-14 h-14 bg-emerald-500/10 rounded-2xl flex items-center justify-center text-emerald-400 group-hover:bg-emerald-500 group-hover:text-white transition-colors">
                             <i class="fas fa-wheat-awn text-2xl"></i>
@@ -269,12 +285,15 @@
                     </div>
                     <h3 class="text-xl font-bold mb-4">Kisan Mithra - Farmer Assistance</h3>
                     <p class="text-slate-400 text-sm leading-relaxed mb-8 flex-grow">
-                        A full-stack web app providing real-time market prices, weather forecasts, and a multilingual query chatbot with voice recognition for rural users.
+                        A full-stack web app providing real-time market prices, weather forecasts, and a multilingual query chatbot with voice recognition...
                     </p>
-                    <div class="flex flex-wrap gap-2 mt-auto">
+                    <div class="flex flex-wrap gap-2 mt-auto mb-4">
                         <span class="text-[10px] px-3 py-1 rounded-lg bg-emerald-500/10 text-emerald-400 font-bold">JavaScript</span>
                         <span class="text-[10px] px-3 py-1 rounded-lg bg-emerald-500/10 text-emerald-400 font-bold">Web APIs</span>
                     </div>
+                    <span class="text-emerald-400 text-sm font-semibold opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-2">
+                        View Details <i class="fas fa-arrow-right"></i>
+                    </span>
                 </div>
 
             </div>
@@ -379,7 +398,7 @@
                         <span class="skill-badge">Project Management</span>
                         <span class="skill-badge">Technical Writing</span>
                         <span class="skill-badge">Team Collaboration</span>
-                        <span class="skill-badge">MS Office</span>
+                        
                     </div>
                 </div>
             </div>
@@ -448,9 +467,12 @@
             <h2 class="text-4xl font-bold mb-16 text-center">Certificates </h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 
-                <div class="glass-card rounded-3xl overflow-hidden group">
-                    <div class="h-48 overflow-hidden">
+                <div class="glass-card rounded-3xl overflow-hidden group cursor-pointer" onclick="openCertificate('dbms')">
+                    <div class="h-48 overflow-hidden relative">
                         <img src="assets/npetl.png" alt="DBMS NPTEL" class="w-full h-full object-cover certificate-img">
+                        <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                            <i class="fas fa-expand text-white text-3xl drop-shadow-lg"></i>
+                        </div>
                     </div>
                     <div class="p-6">
                         <p class="font-bold text-sm">Database Management System</p>
@@ -458,9 +480,12 @@
                     </div>
                 </div>
 
-                <div class="glass-card rounded-3xl overflow-hidden group">
-                    <div class="h-48 overflow-hidden">
+                <div class="glass-card rounded-3xl overflow-hidden group cursor-pointer" onclick="openCertificate('networking')">
+                    <div class="h-48 overflow-hidden relative">
                         <img src="assets/Networking.png.png" alt="Networking Merit" class="w-full h-full object-cover certificate-img">
+                        <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                            <i class="fas fa-expand text-white text-3xl drop-shadow-lg"></i>
+                        </div>
                     </div>
                     <div class="p-6">
                         <p class="font-bold text-sm">NextGen Networking Merit</p>
@@ -468,9 +493,12 @@
                     </div>
                 </div>
 
-                <div class="glass-card rounded-3xl overflow-hidden group">
-                    <div class="h-48 overflow-hidden">
+                <div class="glass-card rounded-3xl overflow-hidden group cursor-pointer" onclick="openCertificate('embedded')">
+                    <div class="h-48 overflow-hidden relative">
                         <img src="assets/udemy (1).png" alt="Embedded C Udemy" class="w-full h-full object-cover certificate-img">
+                        <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                            <i class="fas fa-expand text-white text-3xl drop-shadow-lg"></i>
+                        </div>
                     </div>
                     <div class="p-6">
                         <p class="font-bold text-sm">Embedded C Programming</p>
@@ -478,9 +506,12 @@
                     </div>
                 </div>
 
-                <div class="glass-card rounded-3xl overflow-hidden group">
-                    <div class="h-48 overflow-hidden">
+                <div class="glass-card rounded-3xl overflow-hidden group cursor-pointer" onclick="openCertificate('python')">
+                    <div class="h-48 overflow-hidden relative">
                         <img src="assets/Scalar.png.png" alt="Python Scaler" class="w-full h-full object-cover certificate-img">
+                        <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                            <i class="fas fa-expand text-white text-3xl drop-shadow-lg"></i>
+                        </div>
                     </div>
                     <div class="p-6">
                         <p class="font-bold text-sm">Python for Beginners</p>
@@ -517,5 +548,200 @@
         </div>
     </footer>
 
+    <!-- Universal Modal Container -->
+    <div id="modal-backdrop" class="fixed inset-0 bg-[#0b1120]/90 backdrop-blur-md z-[100] hidden opacity-0 transition-opacity duration-300 flex items-center justify-center p-4">
+        <div id="modal-content" class="glass-card max-w-3xl w-full max-h-[90vh] overflow-y-auto rounded-3xl p-8 relative transform scale-95 transition-transform duration-300 opacity-0 custom-scrollbar border-blue-500/20 shadow-2xl shadow-blue-500/10 bg-[#0f172a]/80">
+            <button onclick="closeModal()" class="absolute top-6 right-6 w-10 h-10 bg-slate-800/80 hover:bg-red-500/80 text-slate-300 hover:text-white rounded-full flex items-center justify-center transition-all z-10">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+            <div id="modal-body">
+                <!-- Dynamic Content Will Be Injected Here via JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Data & Logic Script -->
+    <script>
+        // Project Data Configuration
+        const projectData = {
+            'aqi': {
+                title: "Autonomous AQI Robot",
+                period: "AUG - NOV '24",
+                icon: "fa-robot text-blue-400",
+                bg: "bg-blue-500/10",
+                desc: "An intelligent autonomous mobile purification system designed to monitor and combat localized air pollution. Using highly calibrated MQ135 and particulate matter (PM) sensors paired with an ESP32 microcontroller, the robot constantly measures air quality indices. It uses a dynamic navigation algorithm to physically move toward zones with the highest contamination levels and activate its targeted filtration systems.",
+                tags: ["ESP32", "Robotics", "Sensors", "C++", "IoT"],
+                github: "https://github.com/SARANGES04" // You can replace this specific project link later
+            },
+            'turnstile': {
+                title: "Turnstile Electricity Gen",
+                period: "Sustainable Energy",
+                icon: "fa-bolt text-amber-400",
+                bg: "bg-amber-500/10",
+                desc: "A green-tech innovation focused on harvesting wasted mechanical energy in high-footfall areas like metro stations and stadiums. By integrating customized electromagnetic induction dynamos into standard rotational turnstiles, the system successfully converts human mechanical push-force into stable, usable electricity. Features advanced voltage regulation to power local low-voltage appliances directly.",
+                tags: ["Power Electronics", "Generators", "Sustainability", "Hardware"],
+                github: "https://github.com/SARANGES04"
+            },
+            'yoga': {
+                title: "Interactive Smart Yoga Mat",
+                period: "MAR - APR '24",
+                icon: "fa-spa text-purple-400",
+                bg: "bg-purple-500/10",
+                desc: "A health-tech solution acting as a virtual instructor for yoga and physical therapy. The mat is embedded with a network of Force Sensitive Resistors (FSRs) that map weight distribution in real-time. By comparing live user balance data against programmed ideal postures, it provides instantaneous corrective feedback via visual LED arrays and localized buzzer alerts to prevent injury.",
+                tags: ["FSR Sensors", "Health-Tech", "Arduino", "Signal Processing"],
+                github: "https://github.com/SARANGES04"
+            },
+            'energy': {
+                title: "8051 Energy Monitoring",
+                period: "Industrial / Hardware",
+                icon: "fa-gauge-high text-red-400",
+                bg: "bg-red-500/10",
+                desc: "A robust industrial hardware project built around the classic 8051 microcontroller architecture. Designed to accurately measure Voltage, Current, and total Power consumed by active electrical loads. It utilizes an ADC0804 converter for precise analog-to-digital data interpretation. The entire system was programmed in Embedded C using Keil µVision and fully simulated in Proteus before physical deployment.",
+                tags: ["Embedded C", "Proteus", "8051 MCU", "ADC0804", "Circuit Design"],
+                github: "https://github.com/SARANGES04"
+            },
+            'sole': {
+                title: "Smart Sole Gait Analysis",
+                period: "NOV '24",
+                icon: "fa-shoe-prints text-emerald-400",
+                bg: "bg-emerald-500/10",
+                desc: "A wearable biometric diagnostic tool designed for physical rehabilitation and athletic training analysis. Utilizing an ultra-thin array of FSRs combined with a wireless ESP32 module, it transmits real-time foot pressure mapping data to an external interface. The data is used to study patient balance, posture degradation, and step quality, providing crucial insights for corrective physical therapy.",
+                tags: ["IoT", "Arduino IDE", "Biomechanics", "ESP32", "Wireless Data"],
+                github: "https://github.com/SARANGES04"
+            },
+            'kisan': {
+                title: "Kisan Mithra - Farmer Assistance",
+                period: "Web Application",
+                icon: "fa-wheat-awn text-emerald-400",
+                bg: "bg-emerald-500/10",
+                desc: "A full-stack, user-centric web application designed explicitly for the rural agricultural community. It aggregates and displays real-time crop market prices and localized agricultural weather forecasts. To ensure absolute accessibility for users with limited digital literacy, it features a custom-built, multilingual voice-recognition chatbot that answers farming queries via spoken word.",
+                tags: ["JavaScript", "Web APIs", "Full-Stack", "Voice AI", "UI/UX"],
+                github: "https://github.com/SARANGES04"
+            }
+        };
+
+        // Certificate Data Configuration
+        const certData = {
+            'dbms': {
+                title: "Database Management System",
+                issuer: "NPTEL Certified",
+                img: "assets/npetl.png"
+            },
+            'networking': {
+                title: "NextGen Networking Merit",
+                issuer: "LPU Professional Enhancement",
+                img: "assets/Networking.png.png"
+            },
+            'embedded': {
+                title: "Embedded C Programming",
+                issuer: "Udemy | STM32",
+                img: "assets/udemy (1).png"
+            },
+            'python': {
+                title: "Python for Beginners",
+                issuer: "Scaler Topics",
+                img: "assets/Scalar.png.png"
+            }
+        };
+
+        // DOM Elements
+        const modalBackdrop = document.getElementById('modal-backdrop');
+        const modalContent = document.getElementById('modal-content');
+        const modalBody = document.getElementById('modal-body');
+
+        // Main Modal Open Function
+        function openModal() {
+            modalBackdrop.classList.remove('hidden');
+            // Trigger browser reflow to enable transition
+            void modalBackdrop.offsetWidth;
+            modalBackdrop.classList.remove('opacity-0');
+            modalContent.classList.remove('scale-95', 'opacity-0');
+            document.body.style.overflow = 'hidden'; // Stop background scrolling
+        }
+
+        // Main Modal Close Function
+        function closeModal() {
+            modalBackdrop.classList.add('opacity-0');
+            modalContent.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                modalBackdrop.classList.add('hidden');
+                document.body.style.overflow = ''; // Restore background scrolling
+            }, 300); // Matches the CSS duration-300
+        }
+
+        // Inject and Open Project Details
+        function openProject(id) {
+            const data = projectData[id];
+            
+            // Generate tags HTML
+            const tagsHtml = data.tags.map(tag => 
+                `<span class="px-4 py-1.5 rounded-xl bg-slate-800 text-slate-300 text-sm font-bold border border-slate-700/50">${tag}</span>`
+            ).join('');
+
+            modalBody.innerHTML = `
+                <div class="flex items-center gap-6 mb-8 mt-2">
+                    <div class="w-20 h-20 ${data.bg} rounded-2xl flex items-center justify-center text-4xl shadow-lg shrink-0">
+                        <i class="fas ${data.icon}"></i>
+                    </div>
+                    <div>
+                        <span class="text-sm font-mono text-slate-400 block mb-2 tracking-wide">${data.period}</span>
+                        <h2 class="text-3xl md:text-4xl font-black text-white tracking-tight">${data.title}</h2>
+                    </div>
+                </div>
+                
+                <div class="bg-slate-900/50 rounded-2xl p-6 border border-slate-800 mb-8">
+                    <h4 class="text-sm font-bold text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2">
+                        <i class="fas fa-align-left text-blue-400"></i> Project Overview
+                    </h4>
+                    <p class="text-slate-300 text-lg leading-relaxed">${data.desc}</p>
+                </div>
+
+                <div class="mb-10">
+                    <h4 class="text-sm font-bold text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2">
+                        <i class="fas fa-microchip text-blue-400"></i> Technologies Used
+                    </h4>
+                    <div class="flex flex-wrap gap-3">
+                        ${tagsHtml}
+                    </div>
+                </div>
+
+                <div class="flex">
+                    <a href="${data.github}" target="_blank" class="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4 bg-blue-600 hover:bg-blue-500 text-white rounded-2xl font-bold transition-all transform hover:-translate-y-1 shadow-lg shadow-blue-500/25 group">
+                        <i class="fab fa-github text-xl group-hover:scale-110 transition-transform"></i> View Repository
+                    </a>
+                </div>
+            `;
+            openModal();
+        }
+
+        // Inject and Open Certificate Details
+        function openCertificate(id) {
+            const data = certData[id];
+            modalBody.innerHTML = `
+                <div class="text-center px-4">
+                    <h2 class="text-3xl font-black text-white mb-2 mt-4 tracking-tight">${data.title}</h2>
+                    <p class="text-blue-400 font-mono text-sm mb-8 uppercase tracking-widest font-bold">${data.issuer}</p>
+                    <div class="rounded-2xl overflow-hidden border border-slate-700/50 shadow-[0_0_50px_rgba(96,165,250,0.1)] bg-[#0b1120] p-2 inline-block">
+                        <img src="${data.img}" alt="${data.title}" class="w-full h-auto object-contain rounded-xl max-h-[65vh]">
+                    </div>
+                </div>
+            `;
+            openModal();
+        }
+
+        // Close modal when clicking strictly on the dark blurred backdrop
+        modalBackdrop.addEventListener('click', (e) => {
+            if (e.target === modalBackdrop) {
+                closeModal();
+            }
+        });
+
+        // Close modal on Escape key press
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !modalBackdrop.classList.contains('hidden')) {
+                closeModal();
+            }
+        });
+    </script>
 </body>
 </html>
